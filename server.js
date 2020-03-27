@@ -25,9 +25,11 @@ io.on('connection', socket => {
         
         socket.join(user.room)
         
-        //runs when client come out
+        //Broadcast when a user connects
         const botName = 'Монгол чат бот '
-        socket.emit('message',formatMessage(botName,'Өдрийн мэнд!, тавтай морил :)'))
+        socket.emit(
+            'message',
+            formatMessage(botName,'Өдрийн мэнд!, тавтай морил :)'))
         //when a user connects
         socket.broadcast
         .to(user.room)
@@ -42,9 +44,8 @@ io.on('connection', socket => {
     })
 
     //listen for chatmessage
-    socket.on('chatMessage', (msg) => {
+    socket.on('chatMessage', msg => {
         const user = getCurrentUser(socket.id)
-        socket.join(user.room)
         io.to(user.room).emit('message',formatMessage(user.username, msg))
     })
     //runs when client disconnects
